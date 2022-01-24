@@ -1,0 +1,6 @@
+In order to plot the hbonds analysis, the avg.out file with the interactions has to be obtained by runing the hbonds_cpptraj.sh script
+
+if the region to include in the x axis has to be included in the y axis also use the hbonds_includedR1.py script,
+otherwise use hbonds_excludedR1.py
+
+

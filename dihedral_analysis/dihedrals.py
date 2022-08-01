@@ -2,7 +2,7 @@ import mdtraj as md
 import numpy as np
 RES_INI = 100#int(input('ResIni: >'))
 RES_FIN = 120#int(input('ResFin: >'))
-traj = md.load('FCE_LTL_GQU_LCN-NVT-1.nc', top = '../00_prep/FCE_LTL_GQU_LCN_D3.prmtop')
+traj = md.load('traj.nc', top = 'file.prmtop')
 
 psi = md.compute_psi(traj)
 

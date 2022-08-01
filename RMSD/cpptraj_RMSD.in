@@ -1,0 +1,13 @@
+parm ../00_prep/system.prmtop
+trajin system-NVT-1.nc
+trajin system-NVT-2.nc
+trajin system-NVT-3.nc
+trajin system-NVT-4.nc
+autoimage
+center :1-556 mass origin
+image origin center
+rms ToMA :1-10&!@H= first out R1_rmsd_SA.agr mass    #amber mask small molecule A
+rms ToSA :11-278&!@H= first out R1_rmsd_PA.agr mass  #amber mask protomer A
+rms ToMB :279-288&!@H= first out R1_rmsd_SB.agr mass #amber mask small molecule B
+rms ToSB :289-556&!@H= first out R1_rmsd_PB.agr mass #amber mask protomer B
+run

@@ -20,4 +20,5 @@ def angle_ploter(angle_file):
     plt.tight_layout()
     plt.show()
 
-angle_ploter(input("file to plot 'phi.txt or psi.txt'> "))
+file_to_plot = f"{input('dihedrals to plot phi or psi? > ')}.txt"
+angle_ploter(file_to_plot)

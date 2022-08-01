@@ -22,7 +22,7 @@ def normalize_df_column(df, col="Frac"):
 def raw_df_hbonds(data, R1, R2):
     """data is the hbonds analysis output file from cpptraj 
     R1 an R2 are the regions selected to include in the hbond analysis. 
-    df_hb_dara is a dataframe that includes the interactions
+    df_hb_data is a dataframe that includes the interactions
     as donor and acceptor of every residue in the regions R1 and R2.
     """
     hb = pd.read_csv(data, delimiter=r"\s+")
@@ -90,15 +90,17 @@ def compare_plot(cpptraj_out1, cpptraj_out2, region_one, region_two, first_resid
 region_one =    'substrate'    #input('Enter a string for the region/molecule to plot in the X axys > ')#'loop'
 first_resid_R1= 1    #int(input(f'What is the resid of the FIRST residue in {region_one} > '))#135
 last_resid_R1 = 10    #int(input(f'What is the resid of the LAST residue in {region_one} > '))#159
-cpptraj_out1 =  'all_avg_mon1.out'    #input('Enter the path for the cpptraj.out file for the FIRST trajectory to compare > ')#"all_avg_traj1.out"
-compare =       "no"    #input('Do you want to compare this hbond analysis with another trajectory? yes/no > ')
+cpptraj_out1 =  'all_avg_traj1.out'    #input('Enter the path for the cpptraj.out file for the FIRST trajectory to compare > ')#"all_avg_traj1.out"
+compare =       "yes"    #input('Do you want to compare this hbond analysis with another trajectory? yes/no > ')
 
 region_two = 'protein'
 
 
 if compare == 'yes':
     cpptraj_out2 = input('Enter the path for the cpptraj.out file for the SECOND trajectory to compare > ')#"all_avg_traj1.out"
+    plt.figure(figsize=(15,8))
     compare_plot(cpptraj_out1,cpptraj_out2, region_one, region_two, first_resid_R1, last_resid_R1)
+    plt.tight_layout()
 elif compare == 'no':
     single_plot(cpptraj_out1, region_one, region_two, first_resid_R1, last_resid_R1)
 else:

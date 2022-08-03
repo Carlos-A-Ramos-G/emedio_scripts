@@ -1,4 +1,6 @@
 In order to plot the hbonds analysis, the avg.out file with the interactions has to be obtained by runing the hbonds_cpptraj.sh script
 
+read the ANALYSIS section in hbonds.py
+
 
 

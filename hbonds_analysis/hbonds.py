@@ -107,17 +107,17 @@ def compare_plot(data1, data2, res_i_r1, res_f_r1, resid_mask, selfinteracting, 
 
 ## ANALYSIS
 
-data1 = 'avg.out'
-R1 = 'substrate' #input('Enter a string for the region/molecule to plot in the X axys > ')#
-res_i_r1 = 1 #int(input(f'What is the resid of the FIRST residue in {region_one} > '))#
-res_f_r1 = 10 #int(input(f'What is the resid of the LAST residue in {region_one} > '))#
-R2 = 'protein'
-resid_mask = range(1,279)#range(int(input("first residue in RESIDMASK in hbonds_cpptraj.sh")), int(input("last residue in RESIDMASK in hbonds_cpptraj.sh")) + 1)
-selfinteracting = 'no'#input(f'the interactions of {region_one} with himself has to be also ploted? yes/no > ')
-compare = 'no'#input('Do you want to compare this hbond analysis with another trajectory? yes/no > ')
+data1 = 'avg.out'           #It comes from analysis_cpptraj.sh
+R1 = 'substrate'            #input('Enter a string for the region/molecule to plot in the X axys > ')
+res_i_r1 = 1                #int(input(f'What is the resid of the FIRST residue in {region_one} > '))
+res_f_r1 = 10               #int(input(f'What is the resid of the LAST residue in {region_one} > '))
+R2 = 'protein'              #input('Enter a string for the region/molecule to plot in the Y axys > ')
+resid_mask = range(1,279)   #range(int(input("first residue in RESIDMASK in hbonds_cpptraj.sh")), int(input("last residue in RESIDMASK in hbonds_cpptraj.sh")) + 1)
+selfinteracting = 'no'      #input(f'the interactions of {region_one} with himself has to be also ploted? yes/no > ')
+compare = 'no'              #input('Do you want to compare this hbond analysis with another trajectory? yes/no > ')
 
 if compare == 'yes':
-    data2 = 'all_avg_traj1.out'#input('Enter the path for the cpptraj.out file for the SECOND trajectory to compare > ')#"all_avg_traj1.out"
+    data2 = 'avg2.out' #input('Enter the path for the cpptraj.out file for the SECOND trajectory to compare > ')#"all_avg_traj1.out"
     plt.figure(figsize=(15,8))
     compare_plot(data1,data2, res_i_r1, res_f_r1, resid_mask, selfinteracting, R1, R2)
     plt.tight_layout()

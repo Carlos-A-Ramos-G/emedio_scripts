@@ -1,8 +1,5 @@
-parm ../00_prep/system.prmtop
-trajin system-NVT-1.nc
-trajin system-NVT-2.nc
-trajin system-NVT-3.nc
-trajin system-NVT-4.nc
+parm system.prmtop
+trajin system.nc
 autoimage
 center :1-556 mass origin
 image origin center

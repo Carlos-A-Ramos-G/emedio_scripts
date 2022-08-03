@@ -4,8 +4,10 @@ import csv
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+
 def sorting(index):
     return [int(resname[4:]) for resname in index]
+
 
 
 def residue_column_formating(df, col):
@@ -22,16 +24,17 @@ def normalize_df_column(df, col="Frac"):
 def raw_df_hbonds(data, R1, R2):
     """data is the hbonds analysis output file from cpptraj 
     R1 an R2 are the regions selected to include in the hbond analysis. 
-    df_hb_dara is a dataframe that includes the interactions
+    df_hb_data is a dataframe that includes the interactions
     as donor and acceptor of every residue in the regions R1 and R2.
     """
     hb = pd.read_csv(data, delimiter=r"\s+")
-#    hb = hb[hb.Frac > 0.05]
+    hb = hb[hb.Frac > 0.05]
     R1_as_acc = hb.rename(columns = {"#Acceptor": R1, "Donor": R2})
     R2_as_acc = hb.rename(columns = {"Donor": R1, "#Acceptor": R2})
     df_hb_data = pd.concat([R1_as_acc, R2_as_acc])
     df_hb_data.reset_index(drop=True, inplace=True)
     return df_hb_data
+
 
 def df_agregation(df, reg1, reg2, col='Frac'):
     df = df.groupby([reg1, reg2])[col].sum().reset_index()
@@ -41,6 +44,7 @@ def df_agregation(df, reg1, reg2, col='Frac'):
     df = df.sort_index(axis=0, key=sorting)
     df = df.sort_index(axis=1, key=sorting)
     return df
+
 
 def hbonds_matrix(data, R1, R2, res_i_r1, res_f_r1, col='Frac'):
     """data is the cpptraj output file
@@ -56,7 +60,10 @@ def hbonds_matrix(data, R1, R2, res_i_r1, res_f_r1, col='Frac'):
     matrix = pd.DataFrame({})
     for i , row in df.iterrows():
         condition1 = df[reg1][i][4:] in reg1_res        
-        if condition1 == True:
+        condition2 = df[reg2][i][4:] in reg1_res
+        if condition1 == True and condition2 == False:
+            matrix = matrix.append(df.loc[[i]], ignore_index=True)
+        elif condition1 == True:
             matrix = matrix.append(df.loc[[i]], ignore_index=True)
     return df_agregation(matrix, reg1, reg2, col)
 
@@ -66,6 +73,7 @@ def single_plot(cpptraj_out, region_one, region_two, first_resid_R1, last_resid_
     plt.title('H-Bonds Interactions', fontsize=15)
     sns.heatmap(df, cmap='Blues',linewidths=0.1, linecolor='gray', xticklabels=True, yticklabels=True)
     plt.show()
+
 
 def compare_plot(cpptraj_out1, cpptraj_out2, region_one, region_two, first_resid_R1, last_resid_R1):
     df1 = hbonds_matrix(cpptraj_out1, region_one, region_two, first_resid_R1, last_resid_R1)
@@ -87,17 +95,22 @@ def compare_plot(cpptraj_out1, cpptraj_out2, region_one, region_two, first_resid
     dif = dif.sort_index(axis=1, key=sorting)
     sns.heatmap(dif,cmap=cmap,linewidths=0.1, center =0.0,linecolor='gray', xticklabels=True, yticklabels=True)
 
+
 region_one = input('Enter a string for the region/molecule to plot in the X axys > ')#'loop'
 first_resid_R1= int(input(f'What is the resid of the FIRST residue in {region_one} > '))#135
 last_resid_R1 = int(input(f'What is the resid of the LAST residue in {region_one} > '))#159
-
-region_two = 'algo'
-
-cpptraj_out1 = input('Enter the path for the cpptraj.out file for the FIRST trajectory to compare > ')#"all_avg_traj1.out"
+cpptraj_out1 = input('Enter the path for the cpptraj.out file for the FIRST trajectory to plot > ')#"all_avg_traj1.out"
 compare = input('Do you want to compare this hbond analysis with another trajectory? yes/no > ')
+
+region_two = 'protein'
+
+
+
 if compare == 'yes':
     cpptraj_out2 = input('Enter the path for the cpptraj.out file for the SECOND trajectory to compare > ')#"all_avg_traj1.out"
+    plt.figure(figsize=(15,8))
     compare_plot(cpptraj_out1,cpptraj_out2, region_one, region_two, first_resid_R1, last_resid_R1)
+    plt.tight_layout()
 elif compare == 'no':
     single_plot(cpptraj_out1, region_one, region_two, first_resid_R1, last_resid_R1)
 else:

@@ -9,15 +9,8 @@ DISTANCE="3.2"
 cpptraj <<EOF
 parm $PARM
 trajin $TRAJ 
-hbond HBonds $RESIDMASK angle $ANGLE dist $DISTANCE  acceptormask ${RESIDMASK}&@N=,O=,S= solventdonor :WAT@O solventacceptor :WAT@O solvout solv.out bridgeout bridge.out avgout avg.out
+hbond HBonds $RESIDMASK angle $ANGLE dist $DISTANCE  acceptormask ${RESIDMASK}&@N=,O=,S= solventdonor :WAT@O solventacceptor :WAT@O solvout solv.out bridgeout bridge.out avgout avg.out out number_hidrogen_bonds.out
 run
 quit
 EOF
 
-cpptraj <<EOF
-parm $PARM
-trajin $TRAJ 
-hbond HBonds $RESIDMASK angle $ANGLE dist $DISTANCE  acceptormask ${RESIDMASK}&@N=,O=,S= out number_hidrogen_bonds.out
-run
-quit
-EOF

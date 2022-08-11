@@ -18,6 +18,7 @@ def distance_measure(pairs):
     
     #Save the distances to a file
     f = open('distances.dat', 'w')
+    f.write('distance1   distance2   distance3\n')
     for i in range(t.n_frames):
         for j in range(len(all_distances)):
             f.write("{:<10f} ".format(all_distances[j][i][0]))

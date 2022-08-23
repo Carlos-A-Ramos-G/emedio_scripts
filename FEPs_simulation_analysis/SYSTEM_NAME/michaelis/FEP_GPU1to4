@@ -1,0 +1,24 @@
+#!/bin/bash
+#SBATCH --job-name=CRESNEW_RREPLICA.PRESENT-complex-FEP
+#SBATCH --output=mpi_%j.out 
+#SBATCH --error=mpi_%j.err 
+#SBATCH --ntasks=1 
+#SBATCH --cpus-per-task=40 
+#SBATCH --ntasks-per-node=1 
+#SBATCH --ntasks-per-socket=1 
+#SBATCH --gres=gpu:1 
+  
+module load python/3.6.5 boost/1.69.0 pnetcdf/1.11.2 amber/AMBERver 
+
+
+srun $AMBERHOME/bin/pmemd.cuda -i ti_PRESENT.in -c ../FUTUR/ti001_FUTUR_3ns.rst7 -p ti.prmtop -O -o ti001_PRESENT.out -inf ti001_PRESENT.info -e ti001_PRESENT.en -r ti001_PRESENT.rst -x ti001_PRESENT.nc -l ti001_PRESENT.log
+cpptraj <<_EOF
+parm ti.prmtop
+trajin ti001_PRESENT.nc 300 300 1
+trajout ti001_PRESENT_3ns.rst7
+run
+_EOF
+
+cd ../PAST/
+sbatch FEP_PROD_PAST.cmd
+

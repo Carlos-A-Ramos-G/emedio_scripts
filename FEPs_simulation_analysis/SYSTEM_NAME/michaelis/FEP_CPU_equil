@@ -1,0 +1,24 @@
+#!/bin/bash
+#SBATCH --job-name=CRESNEW.5-equil
+#SBATCH --output=mpi_%j.out 
+#SBATCH --error=mpi_%j.err 
+#SBATCH --ntasks=40 
+# #SBATCH --cpus-per-task=40 
+# #SBATCH --ntasks-per-node=1 
+# #SBATCH --ntasks-per-socket=1 
+#SBATCH --gres=gpu:1 
+  
+module load python/3.6.5 boost/1.69.0 pnetcdf/1.11.2 amber/AMBERver 
+
+srun -n 40 $AMBERHOME/bin/pmemd.MPI -O -i equil.in -c min.rst -p ti.prmtop -o equil.out -inf equil.info -e equil.en -r equil.rst -x equil.nc -l equil.log
+
+cpptraj  <<_EOF
+parm ti.prmtop
+trajin equil.nc 100 200 25 
+trajout equil.rst7
+_EOF
+
+top=$(pwd)
+
+
+for replica in `seq 1 5`;do cd $top/replica_${replica}/5;sbatch FEP_PROD_5.cmd;done

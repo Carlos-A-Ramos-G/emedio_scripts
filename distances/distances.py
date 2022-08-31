@@ -27,7 +27,7 @@ def distance_measure(pairs):
 
 def distance_plotter(file, pairs):
     cols = [f'Dist {i}' for i in range(1, len(pairs)+1)]
-    df = pd.read_csv(file, names=cols, delim_whitespace=True)
+    df = pd.read_csv(file, names=cols, delim_whitespace=True, skiprows=1)
     for col in cols:
         plt.plot(df[col])
     plt.title('distances along simulation')

@@ -6,24 +6,38 @@ import pandas as pd
 import os
 fsize=20
 
-df= pd.read_csv('distances.dat', delim_whitespace=True) 
+cols = ['Cys H-NE His', 'Cys S-C CN']
+replicas = 3
 
-distances = df.columns
-distances
+def dframer(system, replicas):
+    df = pd.DataFrame(columns=cols)
+    for replica in range(1, replicas + 1):
+        data = pd.read_csv(f'distances_{system}_r{replica}.dat', names = cols, delim_whitespace=True, skiprows=1) 
+        df = pd.concat([df, data], ignore_index=True)
+    return df
 
 kde = True
 
-colors = ['#a6cee3', '#1f78b4', '#b2df8a', '#33a02c', '#fb9a99', '#f0027f']
-#plt.xlim(0.0,18.0)
-#plt.ylim(0.0,1.4)
+colors = ['#a6cee3', '#b2df8a', '#f0027f', '#1f78b4', '#33a02c', '#fb9a99']
 
-plt.title('WT interactions ASP (3 us) Monomer A')
-for i, distance in enumerate(distances):
-    ax = sns.kdeplot(df[distance], color = colors[i], fill=True)
-    print(distance, df[distance].mean(), df[distance].std())
-plt.xlabel('Distance ($\AA$)', fontsize=fsize)
-ax.tick_params(labelsize=18)
-ax.legend(distances)
-plt.ylabel('Density', fontsize=fsize)
 
-plt.show()
+def plotter (system, replicas):
+    plt.title(f'{system} distances distributions')
+    df = dframer(system, replicas)
+    for i, distance in enumerate(cols):
+        ax = sns.kdeplot(df[distance], color = colors[i], fill=True)
+        print(system)
+        print(distance, df[distance].mean(), df[distance].std())
+    plt.xlabel('Distance ($\AA$)', fontsize=fsize)
+    ax.tick_params(labelsize=18)
+    plt.xlim(0.0,10.0)
+    plt.ylim(0.0,1.5)
+    ax.legend(cols)
+    plt.ylabel('Density', fontsize=fsize)
+    plt.savefig(f'distributions_{system}.png')
+    plt.show()
+
+systems = ['WT', "P132H", "E166V"]
+for system in systems:
+    plt.figure(figsize=(8,7))
+    plotter(system, replicas)

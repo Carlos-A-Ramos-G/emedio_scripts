@@ -1,0 +1,7 @@
+parm ../00_prep/pbi0451.prmtop
+trajin trajectories_centered_r1.nc
+autoimage
+center :1-600 mass origin
+image origin center
+rms pbi :303-305&!@H= first out pbi_cov_rmsd_r1.agr mass    #amber mask residues of pbi
+run

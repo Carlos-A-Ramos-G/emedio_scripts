@@ -1,0 +1,8 @@
+parm ../00_prep/pbi0451.prmtop
+trajin pbi0451_NVT_1.nc
+trajin pbi0451_NVT_2.nc
+autoimage
+center :1-600 mass origin
+image origin center
+trajout center_2traj.dcd
+run

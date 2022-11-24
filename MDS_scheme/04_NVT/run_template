@@ -1,0 +1,16 @@
+#!/bin/bash 
+#SBATCH --job-name=pbi_R1{presente}
+#SBATCH --output=mpi_%j.out
+#SBATCH --error=mpi_%j.err
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=40
+#SBATCH --ntasks-per-node=1
+#SBATCH --ntasks-per-socket=1
+#SBATCH --gres=gpu:1
+
+module load atlas/3.10.3 python/2.7.14 amber/18
+
+DIR=$(pwd)
+
+pmemd.cuda -O -i prod.in -o pbi0451_noncov_NVT_{presente}.out -p ../00_prep/pbi0451_noncov.prmtop -c pbi0451_noncov_NVT_{pasado}.rst -r  pbi0451_noncov_NVT_{presente}.rst -x pbi0451_noncov_NVT_{presente}.nc
+sbatch run{futuro}.cmd

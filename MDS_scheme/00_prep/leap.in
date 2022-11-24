@@ -1,0 +1,7 @@
+source leaprc.protein.ff14SB
+source leaprc.water.tip3p
+
+SYSTEM = loadpdb structure.pdb
+addions SYSTEM Na+ 0
+solvatebox SYSTEM TIP3PBOX 12
+saveamberparm SYSTEM system_name.prmtop system_name.inpcrd

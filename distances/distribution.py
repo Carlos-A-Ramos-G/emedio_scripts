@@ -6,8 +6,8 @@ import pandas as pd
 import os
 fsize=20
 
-cols = ["distance1", "distance2", "distance3"] 
-replicas = 1
+cols = ['Cys H-NE His', 'Cys S-C CN']
+replicas = 3
 
 def dframer(system, replicas):
     df = pd.DataFrame(columns=cols)
@@ -30,14 +30,14 @@ def plotter (system, replicas):
         print(distance, df[distance].mean(), df[distance].std())
     plt.xlabel('Distance ($\AA$)', fontsize=fsize)
     ax.tick_params(labelsize=18)
-#    plt.xlim(0.0,10.0)
-#    plt.ylim(0.0,1.5)
+    plt.xlim(0.0,10.0)
+    plt.ylim(0.0,1.5)
     ax.legend(cols)
     plt.ylabel('Density', fontsize=fsize)
     plt.savefig(f'distributions_{system}.png')
     plt.show()
 
-systems = ['WT']
+systems = ['WT', "P132H", "E166V"]
 for system in systems:
     plt.figure(figsize=(8,7))
     plotter(system, replicas)

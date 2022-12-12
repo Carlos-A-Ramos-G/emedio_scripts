@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 import mdtraj as md
 import numpy as np
 RES_INI = 100#int(input('ResIni: >'))

@@ -5,35 +5,43 @@ import seaborn as sns
 import pandas as pd
 import os
 
-fuente=15
-zero =  0.9243821816
-s_min = -0.07
-s_max = 13
-PMF_file = 'system.PMF'
-string_file = 'system.string'
-CVs = 6
-nodes = 96
-acylation_pmf = pd.read_csv(PMF_file, \
-                              delim_whitespace=True, names=['bin', 's', 'G'])
-acylation_pmf['G_zeroed']  = acylation_pmf['G'] + zero
-acylation_pmf= acylation_pmf[(acylation_pmf['s'] > s_min) & (acylation_pmf['s'] < s_max)]
 
-CVs = pd.read_csv(string_file, delim_whitespace=True, names=[f'CV {i}' for i in range(1,CVs)])
-CVs['s'] = np.linspace(acylation_pmf['s'].min(),acylation_pmf['s'].max(), nodes)
-CVs = CVs[(CVs['s'] < s_max) & (CVs['s'] > s_min)]
+PMF_FILE = 'system.PMF'
+zero_in_PMF = 0.9243821816
+#plot between s values
+s_min = 0
+s_max = 15
+
+STRING_FILE = 'system.string'
+numbers_of_CVs = 5
+nodes = 96
+
+fuente=15
+
+reaction_pmf = pd.read_csv(PMF_FILE, \
+                              delim_whitespace=True, names=['bin', 's', 'G'])
+reaction_pmf['G_zeroed']  = reaction_pmf['G'] + zero_in_PMF
+reaction_pmf= reaction_pmf[(reaction_pmf['s'] > s_min) & (reaction_pmf['s'] < s_max)]
+
+CVs = pd.read_csv(STRING_FILE, delim_whitespace=True, names=[f'CV {i}' for i in range(1, numbers_of_CVs + 1)])
+CVs['s'] = np.linspace(reaction_pmf['s'].min(), reaction_pmf['s'].max(), nodes)
+CVs = CVs[(CVs['s'] >= 0)]
 
 
 ax = plt.figure(figsize=(7,10))
 plt.subplot(2,1,1)
 
-sns.lineplot(x='s', y='G_zeroed', data= acylation_pmf, color='black')
+sns.lineplot(x='s', y='G_zeroed', data= reaction_pmf, color='black')
 plt.axhline(y = 0, color = 'g', linestyle = '-')
 plt.ylabel('\u0394G ($kcal.mol^{-1}$)',fontsize=fuente)
 plt.xlabel('s ($amu^{1/2}$$\AA$)',fontsize=fuente)
 plt.yticks(fontsize=fuente)
-plt.xticks(np.arange(0, 14, 2), fontsize=fuente)
-plt.xlim([-1, 14.0])
 
+#uncomment and modify accordingly to your needs
+#plt.xticks(np.arange(0, 14, 2), fontsize=fuente)
+#plt.xlim([-1, 14.0]) 
+
+print(reaction_pmf['G_zeroed'].max()) # this will print the TS energy value
 
 plt.subplot(2,1,2)
 
@@ -48,15 +56,16 @@ ax1 = sns.lineplot(x='s' , y='CV 5', data= CVs, color='red', linewidth=2.0)
 #ax1.get_legend().remove()
 plt.xlabel('s ($amu^{1/2}$$\AA$)', fontsize=fuente)
 plt.ylabel('Distances $\AA$', fontsize=fuente)
-plt.yticks(np.arange(1, 4, 0.5), fontsize=fuente)
-plt.xticks(np.arange(0, 14, 2), fontsize=fuente)
-plt.xlim([-1, 14.0])
+#uncomment and modify accordingly to your needs
+#plt.yticks(np.arange(1, 4, 0.5), fontsize=fuente)
+#plt.xticks(np.arange(0, 14, 2), fontsize=fuente)
+#plt.xlim([-1, 14.0])
 plt.yticks(fontsize=fuente)
 
 
 
 
 sns.despine()
-plt.savefig('system_PMF_CVs.png', dpi = 300)
+plt.savefig('acyl_WT_PMF_CVs.png', dpi = 300)
 plt.tight_layout()
 plt.show()

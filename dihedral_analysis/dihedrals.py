@@ -4,7 +4,7 @@ import numpy as np
 RES_INI = 100#int(input('ResIni: >'))
 RES_FIN = 120#int(input('ResFin: >'))
 traj = md.load('traj.nc', top = 'file.prmtop')
-
+#traj = md.load_pdb('2EQQ.pdb')
 psi = md.compute_psi(traj)
 
 resids = np.linspace(RES_INI, RES_FIN, RES_FIN - RES_INI + 1, dtype = 'int')

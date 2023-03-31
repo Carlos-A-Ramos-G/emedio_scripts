@@ -8,7 +8,7 @@ traj = md.load('traj.nc', top = 'file.prmtop')
 psi = md.compute_psi(traj)
 
 resids = np.linspace(RES_INI, RES_FIN, RES_FIN - RES_INI + 1, dtype = 'int')
-psi_interest = psi[1][:,RES_INI-2:RES_FIN-1]
+psi_interest = psi[1][:,RES_INI-1:RES_FIN]
 psi_interest = psi_interest/np.pi*180
 
 f = open("psi.txt", "w")

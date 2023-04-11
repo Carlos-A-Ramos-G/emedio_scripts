@@ -2,5 +2,6 @@ In order to plot the hbonds analysis, the avg.out file with the interactions has
 
 read the ANALYSIS section in hbonds.py
 
+hbonds.py requires python 3.8 
 
 
